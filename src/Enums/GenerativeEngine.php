@@ -1,0 +1,68 @@
+<?php
+
+declare(strict_types=1);
+
+namespace JeanPierreGassin\LaravelGeo\Enums;
+
+enum GenerativeEngine: string
+{
+    case ChatGpt = 'chatgpt';
+    case GptBot = 'gptbot';
+    case OpenAiSearch = 'oai-searchbot';
+    case Claude = 'claudebot';
+    case Perplexity = 'perplexitybot';
+    case GoogleAi = 'google-extended';
+    case AppleIntelligence = 'applebot-extended';
+
+    /**
+     * The case-insensitive token that identifies this engine's crawler within
+     * a User-Agent header.
+     */
+    public function userAgentToken(): string
+    {
+        return match ($this) {
+            self::ChatGpt => 'ChatGPT-User',
+            self::GptBot => 'GPTBot',
+            self::OpenAiSearch => 'OAI-SearchBot',
+            self::Claude => 'ClaudeBot',
+            self::Perplexity => 'PerplexityBot',
+            self::GoogleAi => 'Google-Extended',
+            self::AppleIntelligence => 'Applebot-Extended',
+        };
+    }
+
+    /**
+     * A human-readable name for the product behind the crawler.
+     */
+    public function label(): string
+    {
+        return match ($this) {
+            self::ChatGpt => 'ChatGPT',
+            self::GptBot => 'OpenAI GPTBot',
+            self::OpenAiSearch => 'OpenAI SearchBot',
+            self::Claude => 'Claude',
+            self::Perplexity => 'Perplexity',
+            self::GoogleAi => 'Google AI',
+            self::AppleIntelligence => 'Apple Intelligence',
+        };
+    }
+
+    /**
+     * Resolve the first engine whose crawler token appears in the given
+     * User-Agent string, or null when none match.
+     */
+    public static function fromUserAgent(?string $userAgent): ?self
+    {
+        if ($userAgent === null || $userAgent === '') {
+            return null;
+        }
+
+        foreach (self::cases() as $engine) {
+            if (stripos($userAgent, $engine->userAgentToken()) !== false) {
+                return $engine;
+            }
+        }
+
+        return null;
+    }
+}
