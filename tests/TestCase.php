@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace JeanPierreGassin\LaravelGeo\Tests;
 
 use JeanPierreGassin\LaravelGeo\GeoServiceProvider;

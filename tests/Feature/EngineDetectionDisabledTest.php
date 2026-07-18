@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace JeanPierreGassin\LaravelGeo\Tests\Feature;
 
 use Illuminate\Http\Request;

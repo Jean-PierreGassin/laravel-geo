@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace JeanPierreGassin\LaravelGeo\Tests\Unit;
 
 use JeanPierreGassin\LaravelGeo\Data\SiteLink;

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace JeanPierreGassin\LaravelGeo;
 
 use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
@@ -38,7 +36,7 @@ class GeoServiceProvider extends ServiceProvider
 
     private function registerRoutes(): void
     {
-        if (! config('geo.llms_txt.enabled')) {
+        if (!config('geo.llms_txt.enabled')) {
             return;
         }
 
@@ -77,7 +75,7 @@ class GeoServiceProvider extends ServiceProvider
         $this->app->make(Router::class)
             ->aliasMiddleware('geo.detect', DetectGenerativeEngine::class);
 
-        if (! config('geo.engine_detection.enabled')) {
+        if (!config('geo.engine_detection.enabled')) {
             return;
         }
 
@@ -89,7 +87,7 @@ class GeoServiceProvider extends ServiceProvider
 
     private function registerPublishing(): void
     {
-        if (! $this->app->runningInConsole()) {
+        if (!$this->app->runningInConsole()) {
             return;
         }
 

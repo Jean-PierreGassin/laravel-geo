@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace JeanPierreGassin\LaravelGeo;
 
 use Illuminate\Contracts\Config\Repository;
@@ -53,7 +51,7 @@ class GeoManager
      */
     public function renderHead(): string
     {
-        return $this->views->make('geo::head', [
+        return $this->views->make(view: 'geo::head', data: [
             'structuredData' => $this->structuredData(),
         ])->render();
     }

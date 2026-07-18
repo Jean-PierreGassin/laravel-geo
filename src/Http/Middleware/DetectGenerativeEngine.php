@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace JeanPierreGassin\LaravelGeo\Http\Middleware;
 
 use Closure;
@@ -20,7 +18,7 @@ class DetectGenerativeEngine
     {
         $engine = GenerativeEngine::fromUserAgent($request->userAgent());
         if ($engine !== null) {
-            $request->attributes->set(self::ATTRIBUTE, $engine);
+            $request->attributes->set(key: self::ATTRIBUTE, value: $engine);
         }
 
         return $next($request);
