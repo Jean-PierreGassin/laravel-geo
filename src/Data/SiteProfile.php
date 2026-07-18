@@ -12,8 +12,7 @@ final class SiteProfile
         public readonly ?string $summary = null,
         public readonly ?string $details = null,
         public readonly array $sections = [],
-    ) {
-    }
+    ) {}
 
     /**
      * @param array{
@@ -30,7 +29,7 @@ final class SiteProfile
             summary: $site['summary'] ?? null,
             details: $site['details'] ?? null,
             sections: array_map(
-                fn (array $section): SiteSection => SiteSection::fromArray($section),
+                fn(array $section): SiteSection => SiteSection::fromArray($section),
                 $site['sections'] ?? [],
             ),
         );

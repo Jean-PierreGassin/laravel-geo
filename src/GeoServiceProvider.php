@@ -47,7 +47,7 @@ class GeoServiceProvider extends ServiceProvider
     {
         Blade::directive(
             name: 'geo',
-            handler: fn (): string => "<?php echo app('" . GeoManager::class . "')->renderHead(); ?>",
+            handler: fn(): string => "<?php echo app('" . GeoManager::class . "')->renderHead(); ?>",
         );
     }
 
@@ -55,12 +55,12 @@ class GeoServiceProvider extends ServiceProvider
     {
         Request::macro(
             name: 'generativeEngine',
-            macro: fn (): ?GenerativeEngine => $this->attributes->get(DetectGenerativeEngine::ATTRIBUTE),
+            macro: fn(): ?GenerativeEngine => $this->attributes->get(DetectGenerativeEngine::ATTRIBUTE),
         );
 
         Request::macro(
             name: 'isFromGenerativeEngine',
-            macro: fn (): bool => $this->attributes->get(DetectGenerativeEngine::ATTRIBUTE) !== null,
+            macro: fn(): bool => $this->attributes->get(DetectGenerativeEngine::ATTRIBUTE) !== null,
         );
     }
 

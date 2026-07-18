@@ -9,8 +9,7 @@ final class LlmsTxtController
 {
     public function __construct(
         private readonly GeoManager $geo,
-    ) {
-    }
+    ) {}
 
     public function __invoke(): Response
     {

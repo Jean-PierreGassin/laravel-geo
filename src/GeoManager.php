@@ -9,12 +9,13 @@ use JeanPierreGassin\LaravelGeo\Support\LlmsTxtRenderer;
 
 class GeoManager
 {
+    private const string SCHEMA_ORG_CONTEXT = 'https://schema.org';
+
     public function __construct(
         private readonly Repository $config,
         private readonly ViewFactory $views,
         private readonly LlmsTxtRenderer $renderer,
-    ) {
-    }
+    ) {}
 
     public function siteProfile(): SiteProfile
     {
@@ -37,7 +38,7 @@ class GeoManager
     public function structuredData(): array
     {
         return [
-            '@context' => 'https://schema.org',
+            '@context' => self::SCHEMA_ORG_CONTEXT,
             '@type' => $this->config->get('geo.structured_data.type'),
             'name' => $this->config->get('geo.site.name'),
             'description' => $this->config->get('geo.site.summary'),

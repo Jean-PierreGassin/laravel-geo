@@ -15,13 +15,13 @@ final class LlmsTxtRenderer
     public function render(SiteProfile $profile): string
     {
         $sectionBlocks = collect($profile->sections)
-            ->map(fn (SiteSection $section): string => $this->renderSection($section));
+            ->map(fn(SiteSection $section): string => $this->renderSection($section));
 
         $blocks = collect(["# $profile->name"])
             ->push($profile->summary === null ? null : "> $profile->summary")
             ->push($profile->details)
             ->concat($sectionBlocks)
-            ->filter(fn (?string $block): bool => $block !== null);
+            ->filter(fn(?string $block): bool => $block !== null);
 
         return $blocks->implode("\n\n") . "\n";
     }
@@ -29,7 +29,7 @@ final class LlmsTxtRenderer
     private function renderSection(SiteSection $section): string
     {
         return collect($section->links)
-            ->map(fn (SiteLink $link): string => $this->renderLink($link))
+            ->map(fn(SiteLink $link): string => $this->renderLink($link))
             ->prepend("## $section->heading")
             ->implode("\n");
     }

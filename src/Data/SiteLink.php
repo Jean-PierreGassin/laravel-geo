@@ -8,8 +8,7 @@ final class SiteLink
         public readonly string $title,
         public readonly string $url,
         public readonly ?string $notes = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array{title: string, url: string, notes?: string|null} $link

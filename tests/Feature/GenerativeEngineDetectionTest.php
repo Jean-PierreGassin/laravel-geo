@@ -12,7 +12,7 @@ final class GenerativeEngineDetectionTest extends TestCase
      */
     protected function defineRoutes($router): void
     {
-        $router->middleware('web')->get('/geo-probe', fn (Request $request): array => [
+        $router->middleware('web')->get('/geo-probe', fn(Request $request): array => [
             'is_engine' => $request->isFromGenerativeEngine(),
             'engine' => $request->generativeEngine()?->value,
         ]);

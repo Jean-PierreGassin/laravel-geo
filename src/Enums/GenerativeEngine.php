@@ -40,6 +40,6 @@ enum GenerativeEngine: string
         }
 
         return collect(self::cases())
-            ->first(fn (self $engine): bool => stripos($userAgent, $engine->userAgentToken()) !== false);
+            ->first(fn(self $engine): bool => stripos($userAgent, $engine->userAgentToken()) !== false);
     }
 }

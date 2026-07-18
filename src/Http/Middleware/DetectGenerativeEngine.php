@@ -12,7 +12,7 @@ class DetectGenerativeEngine
     /**
      * The request attribute under which the resolved engine is stored.
      */
-    public const ATTRIBUTE = 'geo.generative_engine';
+    public const string ATTRIBUTE = 'geo.generative_engine';
 
     public function handle(Request $request, Closure $next): Response
     {
