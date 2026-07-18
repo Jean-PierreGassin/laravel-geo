@@ -3,5 +3,5 @@
 use Illuminate\Support\Facades\Route;
 use JeanPierreGassin\LaravelGeo\Http\Controllers\LlmsTxtController;
 
-Route::get(config('geo.llms_txt.path'), LlmsTxtController::class)
+Route::get(uri: config('geo.llms_txt.path'), action: LlmsTxtController::class)
     ->name('geo.llms_txt');

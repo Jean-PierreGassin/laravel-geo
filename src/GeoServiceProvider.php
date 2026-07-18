@@ -14,18 +14,18 @@ use JeanPierreGassin\LaravelGeo\Http\Middleware\DetectGenerativeEngine;
 
 class GeoServiceProvider extends ServiceProvider
 {
-    private const CONFIG_PATH = __DIR__ . '/../config/geo.php';
+    private const string CONFIG_PATH = __DIR__ . '/../config/geo.php';
 
     public function register(): void
     {
-        $this->mergeConfigFrom(self::CONFIG_PATH, 'geo');
+        $this->mergeConfigFrom(path: self::CONFIG_PATH, key: 'geo');
 
         $this->app->singleton(GeoManager::class);
     }
 
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'geo');
+        $this->loadViewsFrom(path: __DIR__ . '/../resources/views', namespace: 'geo');
 
         $this->registerRoutes();
         $this->registerBladeDirective();
@@ -45,19 +45,22 @@ class GeoServiceProvider extends ServiceProvider
 
     private function registerBladeDirective(): void
     {
-        Blade::directive('geo', fn (): string => "<?php echo app('" . GeoManager::class . "')->renderHead(); ?>");
+        Blade::directive(
+            name: 'geo',
+            handler: fn (): string => "<?php echo app('" . GeoManager::class . "')->renderHead(); ?>",
+        );
     }
 
     private function registerRequestMacros(): void
     {
         Request::macro(
-            'generativeEngine',
-            fn (): ?GenerativeEngine => $this->attributes->get(DetectGenerativeEngine::ATTRIBUTE),
+            name: 'generativeEngine',
+            macro: fn (): ?GenerativeEngine => $this->attributes->get(DetectGenerativeEngine::ATTRIBUTE),
         );
 
         Request::macro(
-            'isFromGenerativeEngine',
-            fn (): bool => $this->attributes->get(DetectGenerativeEngine::ATTRIBUTE) !== null,
+            name: 'isFromGenerativeEngine',
+            macro: fn (): bool => $this->attributes->get(DetectGenerativeEngine::ATTRIBUTE) !== null,
         );
     }
 
@@ -73,7 +76,7 @@ class GeoServiceProvider extends ServiceProvider
     private function registerEngineDetection(): void
     {
         $this->app->make(Router::class)
-            ->aliasMiddleware('geo.detect', DetectGenerativeEngine::class);
+            ->aliasMiddleware(name: 'geo.detect', class: DetectGenerativeEngine::class);
 
         if (!config('geo.engine_detection.enabled')) {
             return;
@@ -81,7 +84,7 @@ class GeoServiceProvider extends ServiceProvider
 
         $kernel = $this->app->make(HttpKernelContract::class);
         if ($kernel instanceof HttpKernel) {
-            $kernel->appendMiddlewareToGroup('web', DetectGenerativeEngine::class);
+            $kernel->appendMiddlewareToGroup(group: 'web', middleware: DetectGenerativeEngine::class);
         }
     }
 
@@ -91,12 +94,12 @@ class GeoServiceProvider extends ServiceProvider
             return;
         }
 
-        $this->publishes([
+        $this->publishes(paths: [
             self::CONFIG_PATH => config_path('geo.php'),
-        ], 'geo-config');
+        ], groups: 'geo-config');
 
-        $this->publishes([
+        $this->publishes(paths: [
             __DIR__ . '/../resources/views' => resource_path('views/vendor/geo'),
-        ], 'geo-views');
+        ], groups: 'geo-views');
     }
 }
