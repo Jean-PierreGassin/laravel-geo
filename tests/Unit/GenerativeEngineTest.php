@@ -24,8 +24,12 @@ final class GenerativeEngineTest extends TestCase
     public static function userAgents(): array
     {
         return [
+            'chatgpt-user token' => ['Mozilla/5.0 (compatible; ChatGPT-User/1.0)', GenerativeEngine::ChatGpt],
             'gptbot token' => ['Mozilla/5.0 (compatible; GPTBot/1.1; +https://openai.com/gptbot)', GenerativeEngine::GptBot],
+            'oai-searchbot token' => ['Mozilla/5.0 (compatible; OAI-SearchBot/1.0)', GenerativeEngine::OpenAiSearch],
             'claudebot token' => ['Mozilla/5.0 (compatible; ClaudeBot/1.0)', GenerativeEngine::Claude],
+            'google-extended token' => ['Mozilla/5.0 (compatible; Google-Extended)', GenerativeEngine::GoogleAi],
+            'applebot-extended token' => ['Mozilla/5.0 (compatible; Applebot-Extended)', GenerativeEngine::AppleIntelligence],
             'match is case-insensitive' => ['perplexitybot/1.0', GenerativeEngine::Perplexity],
             'regular browser' => ['Mozilla/5.0 (Macintosh) Chrome/125.0', null],
             'empty string' => ['', null],

@@ -32,22 +32,6 @@ enum GenerativeEngine: string
     }
 
     /**
-     * A human-readable name for the product behind the crawler.
-     */
-    public function label(): string
-    {
-        return match ($this) {
-            self::ChatGpt => 'ChatGPT',
-            self::GptBot => 'OpenAI GPTBot',
-            self::OpenAiSearch => 'OpenAI SearchBot',
-            self::Claude => 'Claude',
-            self::Perplexity => 'Perplexity',
-            self::GoogleAi => 'Google AI',
-            self::AppleIntelligence => 'Apple Intelligence',
-        };
-    }
-
-    /**
      * Resolve the first engine whose crawler token appears in the given
      * User-Agent string, or null when none match.
      */

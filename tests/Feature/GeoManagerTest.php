@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JeanPierreGassin\LaravelGeo\Tests\Feature;
 
+use Illuminate\Support\Facades\Blade;
 use JeanPierreGassin\LaravelGeo\GeoManager;
 use JeanPierreGassin\LaravelGeo\Tests\TestCase;
 
@@ -33,5 +34,15 @@ final class GeoManagerTest extends TestCase
 
         $this->assertStringContainsString('application/ld+json', $head);
         $this->assertStringContainsString('"name": "Acme"', $head);
+    }
+
+    public function test_the_geo_blade_directive_emits_the_structured_data(): void
+    {
+        config()->set('geo.site.name', 'Acme');
+
+        $rendered = Blade::render('<head>@geo</head>');
+
+        $this->assertStringContainsString('application/ld+json', $rendered);
+        $this->assertStringContainsString('"name": "Acme"', $rendered);
     }
 }
