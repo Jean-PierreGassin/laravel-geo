@@ -14,10 +14,16 @@ final class SiteProfile
         public readonly ?string $summary = null,
         public readonly ?string $details = null,
         public readonly array $sections = [],
-    ) {}
+    ) {
+    }
 
     /**
-     * @param array{name: string, summary?: string|null, details?: string|null, sections?: array<int, array<string, mixed>>} $site
+     * @param array{
+     *     name: string,
+     *     summary?: string|null,
+     *     details?: string|null,
+     *     sections?: array<int, array<string, mixed>>
+     * } $site
      */
     public static function fromConfig(array $site): self
     {

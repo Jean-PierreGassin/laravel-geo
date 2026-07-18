@@ -39,13 +39,13 @@ final class LlmsTxtRendererTest extends TestCase
 
         MARKDOWN;
 
-        $this->assertSame($expected, (new LlmsTxtRenderer)->render($profile));
+        $this->assertSame($expected, (new LlmsTxtRenderer())->render($profile));
     }
 
     public function test_omits_optional_blocks_when_the_profile_only_has_a_name(): void
     {
         $profile = new SiteProfile(name: 'Acme');
 
-        $this->assertSame("# Acme\n", (new LlmsTxtRenderer)->render($profile));
+        $this->assertSame("# Acme\n", (new LlmsTxtRenderer())->render($profile));
     }
 }

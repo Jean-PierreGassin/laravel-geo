@@ -12,7 +12,8 @@ final class SiteSection
     public function __construct(
         public readonly string $heading,
         public readonly array $links = [],
-    ) {}
+    ) {
+    }
 
     /**
      * @param array{heading: string, links?: array<int, array<string, mixed>>} $section

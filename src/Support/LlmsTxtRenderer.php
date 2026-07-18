@@ -6,6 +6,7 @@ namespace JeanPierreGassin\LaravelGeo\Support;
 
 use JeanPierreGassin\LaravelGeo\Data\SiteLink;
 use JeanPierreGassin\LaravelGeo\Data\SiteProfile;
+use JeanPierreGassin\LaravelGeo\Data\SiteSection;
 
 /**
  * Renders a SiteProfile as an llms.txt Markdown document following the
@@ -15,28 +16,24 @@ final class LlmsTxtRenderer
 {
     public function render(SiteProfile $profile): string
     {
-        $lines = ["# $profile->name"];
+        $sectionBlocks = collect($profile->sections)
+            ->map(fn (SiteSection $section): string => $this->renderSection($section));
 
-        if ($profile->summary !== null) {
-            $lines[] = '';
-            $lines[] = "> $profile->summary";
-        }
+        $blocks = collect(["# $profile->name"])
+            ->push($profile->summary === null ? null : "> $profile->summary")
+            ->push($profile->details)
+            ->concat($sectionBlocks)
+            ->filter(fn (?string $block): bool => $block !== null);
 
-        if ($profile->details !== null) {
-            $lines[] = '';
-            $lines[] = $profile->details;
-        }
+        return $blocks->implode("\n\n") . "\n";
+    }
 
-        foreach ($profile->sections as $section) {
-            $lines[] = '';
-            $lines[] = "## $section->heading";
-
-            foreach ($section->links as $link) {
-                $lines[] = $this->renderLink($link);
-            }
-        }
-
-        return implode("\n", $lines)."\n";
+    private function renderSection(SiteSection $section): string
+    {
+        return collect($section->links)
+            ->map(fn (SiteLink $link): string => $this->renderLink($link))
+            ->prepend("## $section->heading")
+            ->implode("\n");
     }
 
     private function renderLink(SiteLink $link): string

@@ -15,7 +15,8 @@ class GeoManager
         private readonly Repository $config,
         private readonly ViewFactory $views,
         private readonly LlmsTxtRenderer $renderer,
-    ) {}
+    ) {
+    }
 
     public function siteProfile(): SiteProfile
     {

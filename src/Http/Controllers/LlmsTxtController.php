@@ -11,14 +11,15 @@ final class LlmsTxtController
 {
     public function __construct(
         private readonly GeoManager $geo,
-    ) {}
+    ) {
+    }
 
     public function __invoke(): Response
     {
         return new Response(
-            $this->geo->llmsTxt(),
-            Response::HTTP_OK,
-            ['Content-Type' => 'text/markdown; charset=UTF-8'],
+            content: $this->geo->llmsTxt(),
+            status: Response::HTTP_OK,
+            headers: ['Content-Type' => 'text/markdown; charset=UTF-8'],
         );
     }
 }

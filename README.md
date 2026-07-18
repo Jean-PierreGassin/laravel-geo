@@ -70,11 +70,13 @@ if ($request->isFromGenerativeEngine()) {
 To opt out of the global behaviour, set `engine_detection.enabled` to `false` and apply the
 `geo.detect` middleware alias to specific routes instead.
 
-## Testing
+## Testing & code style
 
 ```bash
 composer install
-vendor/bin/phpunit
+composer test          # phpunit
+composer check-style   # phpcs (PSR-12)
+composer fix-style     # phpcbf
 ```
 
 ## License

@@ -16,7 +16,7 @@ use JeanPierreGassin\LaravelGeo\Http\Middleware\DetectGenerativeEngine;
 
 class GeoServiceProvider extends ServiceProvider
 {
-    private const CONFIG_PATH = __DIR__.'/../config/geo.php';
+    private const CONFIG_PATH = __DIR__ . '/../config/geo.php';
 
     public function register(): void
     {
@@ -27,7 +27,7 @@ class GeoServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'geo');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'geo');
 
         $this->registerRoutes();
         $this->registerBladeDirective();
@@ -42,12 +42,12 @@ class GeoServiceProvider extends ServiceProvider
             return;
         }
 
-        Route::middleware('web')->group(__DIR__.'/../routes/geo.php');
+        Route::middleware('web')->group(__DIR__ . '/../routes/geo.php');
     }
 
     private function registerBladeDirective(): void
     {
-        Blade::directive('geo', fn (): string => "<?php echo app('".GeoManager::class."')->renderHead(); ?>");
+        Blade::directive('geo', fn (): string => "<?php echo app('" . GeoManager::class . "')->renderHead(); ?>");
     }
 
     private function registerRequestMacros(): void
@@ -63,6 +63,15 @@ class GeoServiceProvider extends ServiceProvider
         );
     }
 
+    /**
+     * Registers the geo.detect middleware alias and, when engine detection is
+     * enabled, appends the middleware to the web group.
+     *
+     * The middleware is appended through the HTTP kernel rather than the
+     * router because the kernel re-syncs its own middleware groups onto the
+     * router when it boots, which would otherwise drop a group pushed directly
+     * onto the router.
+     */
     private function registerEngineDetection(): void
     {
         $this->app->make(Router::class)
@@ -72,9 +81,6 @@ class GeoServiceProvider extends ServiceProvider
             return;
         }
 
-        // Append through the HTTP kernel rather than the router: the kernel
-        // re-syncs its own middleware groups onto the router when it boots,
-        // which would otherwise drop a group pushed directly onto the router.
         $kernel = $this->app->make(HttpKernelContract::class);
         if ($kernel instanceof HttpKernel) {
             $kernel->appendMiddlewareToGroup('web', DetectGenerativeEngine::class);
@@ -92,7 +98,7 @@ class GeoServiceProvider extends ServiceProvider
         ], 'geo-config');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/geo'),
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/geo'),
         ], 'geo-views');
     }
 }

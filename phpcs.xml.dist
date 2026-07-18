@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ruleset name="laravel-geo">
+    <description>The coding standard of the laravel-geo package.</description>
+
+    <arg name="colors"/>
+    <arg value="p"/>
+    <arg value="s"/>
+
+    <file>src</file>
+    <file>tests</file>
+
+    <!-- Use the PSR-12 standard. -->
+    <rule ref="PSR12"/>
+
+    <!-- Allow snake_case for test methods. -->
+    <rule ref="PSR1.Methods.CamelCapsMethodName">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+</ruleset>
