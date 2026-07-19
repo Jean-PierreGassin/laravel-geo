@@ -145,23 +145,53 @@ use JeanPierreGassin\LaravelGeo\Enums\GenerativeEngine;
 if ($request->isFromGenerativeEngine()) {
     $engine = $request->generativeEngine();
 
-    if ($engine === GenerativeEngine::Claude) {
+    if ($engine === GenerativeEngine::ClaudeBot) {
         // Serve a citation-friendly response.
     }
 }
 ```
 
-The `GenerativeEngine` enum recognises the following crawlers out of the box:
+Each engine also carries its `vendor()` and a `type()` so you can branch on
+crawler _behaviour_ rather than a specific product. The type is the GEO-relevant
+distinction: `Search` and `Agent` fetchers can cite and link back to your page,
+while `Training` crawlers only ingest content and return no attribution.
 
-| Engine             | User-Agent token    |
-|--------------------|---------------------|
-| ChatGPT            | `ChatGPT-User`      |
-| GPTBot             | `GPTBot`            |
-| OpenAI SearchBot   | `OAI-SearchBot`     |
-| Claude             | `ClaudeBot`         |
-| Perplexity         | `PerplexityBot`     |
-| Google AI          | `Google-Extended`   |
-| Apple Intelligence | `Applebot-Extended` |
+```php
+use JeanPierreGassin\LaravelGeo\Enums\GenerativeEngineType;
+
+if ($request->generativeEngine()?->type() === GenerativeEngineType::Search) {
+    // Invest in a rich, citation-friendly response for answer engines.
+}
+```
+
+The `GenerativeEngine` enum recognises the following crawlers out of the box.
+Only tokens that appear in a real `User-Agent` header are detected; robots.txt
+opt-out tokens such as `Google-Extended` and `Applebot-Extended` are excluded
+because they never reach the server as a header.
+
+| Vendor       | User-Agent token        | Type       |
+|--------------|-------------------------|------------|
+| OpenAI       | `GPTBot`                | Training   |
+| OpenAI       | `OAI-SearchBot`         | Search     |
+| OpenAI       | `ChatGPT-User`          | Agent      |
+| Anthropic    | `ClaudeBot`             | Training   |
+| Anthropic    | `Claude-SearchBot`      | Search     |
+| Anthropic    | `Claude-User`           | Agent      |
+| Google       | `Google-CloudVertexBot` | Agent      |
+| Google       | `Google-NotebookLM`     | Agent      |
+| Perplexity   | `PerplexityBot`         | Search     |
+| Perplexity   | `Perplexity-User`       | Agent      |
+| Apple        | `Applebot`              | Search     |
+| Microsoft    | `bingbot`               | Search     |
+| Amazon       | `Amazonbot`             | Training   |
+| Meta         | `meta-externalagent`    | Training   |
+| Meta         | `meta-externalfetcher`  | Agent      |
+| ByteDance    | `Bytespider`            | Training   |
+| Mistral      | `MistralAI-User`        | Agent      |
+| DuckDuckGo   | `DuckAssistBot`         | Search     |
+| Common Crawl | `CCBot`                 | Training   |
+| Cohere       | `cohere-ai`             | Training   |
+| You.com      | `YouBot`                | Search     |
 
 To opt out of the global behaviour, set `engine_detection.enabled` to `false` and apply the
 `geo.detect` middleware alias to specific routes instead:
