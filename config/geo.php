@@ -23,7 +23,9 @@ return [
                 'links' => [
                     [
                         'title' => 'Getting started',
-                        'url' => '/docs',
+                        // Prefer absolute URLs so generative crawlers can resolve
+                        // them without guessing the host.
+                        'url' => env('APP_URL', 'http://localhost') . '/docs',
                         'notes' => 'Installation and first steps',
                     ],
                 ],
