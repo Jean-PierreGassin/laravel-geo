@@ -2,20 +2,17 @@
 
 namespace JeanPierreGassin\LaravelGeo\Support;
 
+use JeanPierreGassin\LaravelGeo\Contracts\LlmsTxtRenderer;
 use JeanPierreGassin\LaravelGeo\Data\SiteLink;
 use JeanPierreGassin\LaravelGeo\Data\SiteProfile;
 use JeanPierreGassin\LaravelGeo\Data\SiteSection;
 
-/**
- * Renders a SiteProfile as an llms.txt Markdown document following the
- * structure described at https://llmstxt.org.
- */
-final class LlmsTxtRenderer
+class MarkdownLlmsTxtRenderer implements LlmsTxtRenderer
 {
     public function render(SiteProfile $profile): string
     {
-        $sectionBlocks = collect($profile->sections)
-            ->map(fn(SiteSection $section): string => $this->renderSection($section));
+        $sectionBlocks = $profile->sections
+            ->map(fn(SiteSection $section): string => $this->renderSection(section: $section));
 
         $blocks = collect(["# $profile->name"])
             ->push($profile->summary === null ? null : "> $profile->summary")
@@ -28,8 +25,8 @@ final class LlmsTxtRenderer
 
     private function renderSection(SiteSection $section): string
     {
-        return collect($section->links)
-            ->map(fn(SiteLink $link): string => $this->renderLink($link))
+        return $section->links
+            ->map(fn(SiteLink $link): string => $this->renderLink(link: $link))
             ->prepend("## $section->heading")
             ->implode("\n");
     }

@@ -13,7 +13,7 @@ final class GenerativeEngineTest extends TestCase
         ?string $userAgent,
         ?GenerativeEngine $expected,
     ): void {
-        $this->assertSame($expected, GenerativeEngine::fromUserAgent($userAgent));
+        $this->assertSame($expected, GenerativeEngine::fromUserAgent(userAgent: $userAgent));
     }
 
     /**

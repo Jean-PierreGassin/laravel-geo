@@ -2,36 +2,14 @@
 
 namespace JeanPierreGassin\LaravelGeo\Data;
 
-final class SiteProfile
-{
-    /**
-     * @param array<int, SiteSection> $sections
-     */
-    public function __construct(
-        public readonly string $name,
-        public readonly ?string $summary = null,
-        public readonly ?string $details = null,
-        public readonly array $sections = [],
-    ) {}
+use JeanPierreGassin\LaravelGeo\Collections\SiteSectionCollection;
 
-    /**
-     * @param array{
-     *     name: string,
-     *     summary?: string|null,
-     *     details?: string|null,
-     *     sections?: array<int, array<string, mixed>>
-     * } $site
-     */
-    public static function fromConfig(array $site): self
-    {
-        return new self(
-            name: $site['name'],
-            summary: $site['summary'] ?? null,
-            details: $site['details'] ?? null,
-            sections: array_map(
-                fn(array $section): SiteSection => SiteSection::fromArray($section),
-                $site['sections'] ?? [],
-            ),
-        );
-    }
+final readonly class SiteProfile
+{
+    public function __construct(
+        public string $name,
+        public ?string $summary = null,
+        public ?string $details = null,
+        public SiteSectionCollection $sections = new SiteSectionCollection(),
+    ) {}
 }

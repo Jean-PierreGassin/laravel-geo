@@ -16,7 +16,7 @@ class DetectGenerativeEngine
 
     public function handle(Request $request, Closure $next): Response
     {
-        $engine = GenerativeEngine::fromUserAgent($request->userAgent());
+        $engine = GenerativeEngine::fromUserAgent(userAgent: $request->userAgent());
         if ($engine !== null) {
             $request->attributes->set(key: self::ATTRIBUTE, value: $engine);
         }

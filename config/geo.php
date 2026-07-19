@@ -15,11 +15,8 @@ return [
 
     'site' => [
         'name' => env('APP_NAME', 'Laravel'),
-
         'summary' => 'A short, plain-language description of what this site offers.',
-
         'details' => null,
-
         'sections' => [
             [
                 'heading' => 'Documentation',

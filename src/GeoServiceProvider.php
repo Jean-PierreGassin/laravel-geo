@@ -9,8 +9,12 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use JeanPierreGassin\LaravelGeo\Contracts\LlmsTxtRenderer;
+use JeanPierreGassin\LaravelGeo\Contracts\SchemaGraphRenderer;
 use JeanPierreGassin\LaravelGeo\Enums\GenerativeEngine;
 use JeanPierreGassin\LaravelGeo\Http\Middleware\DetectGenerativeEngine;
+use JeanPierreGassin\LaravelGeo\Support\JsonLdSchemaGraphRenderer;
+use JeanPierreGassin\LaravelGeo\Support\MarkdownLlmsTxtRenderer;
 
 class GeoServiceProvider extends ServiceProvider
 {
@@ -20,6 +24,8 @@ class GeoServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(path: self::CONFIG_PATH, key: 'geo');
 
+        $this->app->bind(abstract: LlmsTxtRenderer::class, concrete: MarkdownLlmsTxtRenderer::class);
+        $this->app->bind(abstract: SchemaGraphRenderer::class, concrete: JsonLdSchemaGraphRenderer::class);
         $this->app->singleton(GeoManager::class);
     }
 

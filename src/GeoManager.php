@@ -4,22 +4,26 @@ namespace JeanPierreGassin\LaravelGeo;
 
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use JeanPierreGassin\LaravelGeo\Contracts\LlmsTxtRenderer;
+use JeanPierreGassin\LaravelGeo\Contracts\SchemaGraphRenderer;
+use JeanPierreGassin\LaravelGeo\Data\SchemaGraph;
 use JeanPierreGassin\LaravelGeo\Data\SiteProfile;
-use JeanPierreGassin\LaravelGeo\Support\LlmsTxtRenderer;
+use JeanPierreGassin\LaravelGeo\Exceptions\SchemaGraphEncodingException;
+use JeanPierreGassin\LaravelGeo\Support\SiteProfileFactory;
 
-class GeoManager
+readonly class GeoManager
 {
-    private const string SCHEMA_ORG_CONTEXT = 'https://schema.org';
-
     public function __construct(
-        private readonly Repository $config,
-        private readonly ViewFactory $views,
-        private readonly LlmsTxtRenderer $renderer,
+        private Repository $config,
+        private ViewFactory $views,
+        private LlmsTxtRenderer $llmsTxtRenderer,
+        private SchemaGraphRenderer $schemaGraphRenderer,
+        private SiteProfileFactory $siteProfiles,
     ) {}
 
     public function siteProfile(): SiteProfile
     {
-        return SiteProfile::fromConfig($this->config->get('geo.site'));
+        return $this->siteProfiles->fromConfig(config: $this->config->get(key: 'geo.site'));
     }
 
     /**
@@ -27,33 +31,32 @@ class GeoManager
      */
     public function llmsTxt(): string
     {
-        return $this->renderer->render($this->siteProfile());
+        return $this->llmsTxtRenderer->render(profile: $this->siteProfile());
     }
 
     /**
-     * The JSON-LD graph advertised to generative engines.
-     *
-     * @return array<string, mixed>
+     * The schema.org graph advertised to generative engines.
      */
-    public function structuredData(): array
+    public function schemaGraph(): SchemaGraph
     {
-        return [
-            '@context' => self::SCHEMA_ORG_CONTEXT,
-            '@type' => $this->config->get('geo.structured_data.type'),
-            'name' => $this->config->get('geo.site.name'),
-            'description' => $this->config->get('geo.site.summary'),
-            'url' => $this->config->get('geo.structured_data.url'),
-        ];
+        return new SchemaGraph(
+            type: $this->config->get(key: 'geo.structured_data.type'),
+            name: $this->config->get(key: 'geo.site.name'),
+            description: $this->config->get(key: 'geo.site.summary'),
+            url: $this->config->get(key: 'geo.structured_data.url'),
+        );
     }
 
     /**
      * Render the <head> markup (JSON-LD script tag) emitted by the @geo
      * Blade directive.
+     *
+     * @throws SchemaGraphEncodingException
      */
     public function renderHead(): string
     {
         return $this->views->make(view: 'geo::head', data: [
-            'structuredData' => $this->structuredData(),
+            'schemaGraphJson' => $this->schemaGraphRenderer->render(graph: $this->schemaGraph()),
         ])->render();
     }
 }

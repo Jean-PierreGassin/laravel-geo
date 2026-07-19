@@ -39,7 +39,12 @@ enum GenerativeEngine: string
             return null;
         }
 
-        return collect(self::cases())
-            ->first(fn(self $engine): bool => stripos($userAgent, $engine->userAgentToken()) !== false);
+        foreach (self::cases() as $engine) {
+            if (stripos($userAgent, $engine->userAgentToken()) !== false) {
+                return $engine;
+            }
+        }
+
+        return null;
     }
 }

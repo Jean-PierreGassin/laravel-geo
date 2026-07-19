@@ -5,10 +5,12 @@ namespace JeanPierreGassin\LaravelGeo\Http\Controllers;
 use Illuminate\Http\Response;
 use JeanPierreGassin\LaravelGeo\GeoManager;
 
-final class LlmsTxtController
+readonly class LlmsTxtController
 {
+    private const string CONTENT_TYPE = 'text/markdown; charset=UTF-8';
+
     public function __construct(
-        private readonly GeoManager $geo,
+        private GeoManager $geo,
     ) {}
 
     public function __invoke(): Response
@@ -16,7 +18,7 @@ final class LlmsTxtController
         return new Response(
             content: $this->geo->llmsTxt(),
             status: Response::HTTP_OK,
-            headers: ['Content-Type' => 'text/markdown; charset=UTF-8'],
+            headers: ['Content-Type' => self::CONTENT_TYPE],
         );
     }
 }

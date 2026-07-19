@@ -4,12 +4,13 @@ namespace JeanPierreGassin\LaravelGeo\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use JeanPierreGassin\LaravelGeo\Data\SiteProfile;
+use JeanPierreGassin\LaravelGeo\Data\SchemaGraph;
 use JeanPierreGassin\LaravelGeo\GeoManager;
 
 /**
  * @method static SiteProfile siteProfile()
  * @method static string llmsTxt()
- * @method static array<string, mixed> structuredData()
+ * @method static SchemaGraph schemaGraph()
  * @method static string renderHead()
  *
  * @see GeoManager
