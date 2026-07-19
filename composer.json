@@ -9,7 +9,7 @@
         "ai",
         "seo"
     ],
-    "license": "MIT",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Jean-Pierre Gassin",
